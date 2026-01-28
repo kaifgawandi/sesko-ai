@@ -27,22 +27,22 @@ Cloud and Edge deployment planned via incubation support.
 ## 📸 Screenshots
 
 ### Chat Interface
-![Chat Interface](screenshots/first%20interaction.png)
+![Chat Interface](Screenshot/first interaction.png)
 
 ### Mathematical & General Queries
-![Math Calculations](screenshots/Mathematical%20Calculations.png)
+![Math Calculations](Screenshot/Mathematical Calculations.png)
 
 ### PDF Summarization
-![PDF Summary](screenshots/pdf%20summarization.png)
+![PDF Summary](Screenshot/pdf summarization.png)
 
 ### PDF + Player Information
-![PDF Analysis](screenshots/pdf%20summurize%20and%20player%20information.png)
+![PDF Analysis](Screenshot/pdf summurize and player information.png)
 
 ### Website Information & Explanation
-![Website Details](screenshots/website%20deatiling.png)
+![Website Details](Screenshot/website deatiling.png)
 
 ### Website Suggestions
-![Website Suggestions](screenshots/website%20suggestions.png)
+![Website Suggestions](Screenshot/website suggestions.png)
 
 
 ## 👤 Founder
