@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SESKO AI | Intelligence Reimagined</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f8fafd; 
+            --sidebar-bg: #f0f4f9; 
+            --text-primary: #1f1f1f;
+            --text-secondary: #444746; 
+            --accent-blue: #0b57d0; 
+            --hover-bg: #e1e5e9;
+            --input-bg: #ffffff; 
+            --sidebar-width: 280px;
+            --bot-gradient: linear-gradient(45deg, #4285f4, #9b72cb, #d96570);
+        }
+        body.dark-mode {
+            --bg-main: #131314; 
+            --sidebar-bg: #1e1f20; 
+            --text-primary: #e3e3e3;
+            --text-secondary: #c4c7c5; 
+            --accent-blue: #a8c7fa; 
+            --hover-bg: #333537;
+            --input-bg: #1e1f20;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Google Sans', 'Segoe UI', Roboto, sans-serif; }
+        
+        body { background-color: var(--bg-main); color: var(--text-primary); height: 100vh; display: flex; transition: background 0.3s; overflow: hidden; }
+
+        /* Sidebar Styling */
+        #sidebar { width: var(--sidebar-width); background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 12px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        #sidebar.collapsed { width: 72px; }
+        #sidebar.collapsed .hide-on-collapse { display: none; }
+        
+        .new-chat { background: var(--hover-bg); border: none; padding: 14px 18px; border-radius: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; color: var(--text-primary); font-weight: 500; margin-bottom: 20px; transition: 0.2s; }
+        .new-chat:hover { filter: brightness(0.9); }
+
+        .menu-item { padding: 12px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; border-radius: 12px; color: var(--text-primary); font-size: 14px; margin-bottom: 4px; transition: 0.2s; }
+        .menu-item:hover { background: var(--hover-bg); }
+
+        /* Main Content */
+        #main { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; }
+        
+        /* UPDATED LOGO STYLING */
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .header-logo { height: 42px; width: auto; border-radius: 8px; transition: transform 0.3s ease; }
+        .header-logo:hover { transform: scale(1.05); }
+        
+        .logo { font-size: 22px; font-weight: 600; background: var(--bot-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .user-profile { width: 34px; height: 34px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .user-profile:hover { border-color: var(--accent-blue); }
+
+        #chat-window { flex-grow: 1; overflow-y: auto; padding: 20px 15%; display: flex; flex-direction: column; gap: 32px; scroll-behavior: smooth; }
+        
+        /* UPDATED WELCOME SCREEN */
+        .welcome-screen { text-align: center; margin-top: 10vh; max-width: 800px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; align-items: center; }
+        .welcome-logo { height: 140px; width: auto; margin-bottom: 25px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); animation: fadeIn 1s ease; }
+        
+        .welcome-screen h1 { font-size: 56px; line-height: 1.2; font-weight: 500; background: var(--bot-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .welcome-screen p { font-size: 24px; color: var(--text-secondary); }
+
+        /* Chat Bubbles */
+        .user-msg { align-self: flex-end; max-width: 80%; }
+        .user-msg span { background: var(--hover-bg); padding: 14px 24px; border-radius: 24px; display: block; font-size: 16px; line-height: 1.5; }
+        
+        .bot-msg { display: flex; gap: 20px; animation: fadeIn 0.5s ease; }
+        .bot-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--bot-gradient); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; }
+        .bot-text { line-height: 1.7; font-size: 16px; color: var(--text-primary); }
+
+        /* Input Area */
+        .input-container { width: 100%; max-width: 850px; margin: 0 auto 24px; padding: 0 24px; }
+        .search-box { background: var(--input-bg); border-radius: 32px; padding: 8px 12px 8px 24px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--hover-bg); transition: box-shadow 0.3s; }
+        .search-box:focus-within { box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-color: transparent; }
+        .search-box input { flex-grow: 1; border: none; background: transparent; padding: 12px 0; outline: none; color: var(--text-primary); font-size: 16px; }
+        
+        .icon-btn { color: var(--text-secondary); cursor: pointer; padding: 10px; border-radius: 50%; transition: 0.2s; }
+        .icon-btn:hover { background: var(--hover-bg); color: var(--accent-blue); }
+
+        /* Loading Animation */
+        .dots { display: flex; gap: 4px; padding: 10px; }
+        .dot { width: 8px; height: 8px; background: var(--text-secondary); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out; }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Markdown Styling */
+        .bot-text h3 { margin-top: 15px; color: var(--accent-blue); font-size: 20px; }
+        .bot-text blockquote { border-left: 4px solid var(--accent-blue); padding-left: 15px; margin: 10px 0; color: var(--text-secondary); font-style: italic; background: rgba(0,0,0,0.03); border-radius: 4px; }
+    </style>
+</head>
+<body class="dark-mode">
+
+    <aside id="sidebar">
+        <div class="sidebar-btn icon-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        <button class="new-chat" onclick="location.reload()">
+            <i class="fas fa-plus"></i> 
+            <span class="hide-on-collapse">New chat</span>
+        </button>
+        
+        <div style="flex-grow: 1; overflow-y: auto;" class="hide-on-collapse">
+            <p style="font-size: 12px; font-weight: 600; padding: 10px 16px; color: var(--text-secondary); text-transform: uppercase;">Recent</p>
+            <div class="menu-item"><i class="far fa-comment"></i> Document Analysis</div>
+            <div class="menu-item"><i class="far fa-comment"></i> Web Search</div>
+        </div>
+
+        <div class="menu-item" onclick="toggleTheme()"><i class="fas fa-moon"></i> <span class="hide-on-collapse">Dark Mode</span></div>
+        <div class="menu-item" onclick="clearHistory()"><i class="fas fa-trash"></i> <span class="hide-on-collapse">Clear History</span></div>
+    </aside>
+
+    <main id="main">
+        <header>
+            <div class="logo-container">
+                <img src="SESKOLOGO.png" class="header-logo" alt="SESKO Logo">
+                <div class="logo">SESKO</div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="hide-on-collapse" style="font-size: 14px; opacity: 0.7;">Pro Plan</span>
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kaif" class="user-profile">
+            </div>
+        </header>
+
+        <div id="chat-window">
+            <div class="welcome-screen" id="welcome">
+                <img src="SESKOLOGO.png" class="welcome-logo" alt="SESKO Logo">
+                <h1>Hello, Kaif</h1>
+                <p>How can I assist your productivity today?</p>
+            </div>
+            <div id="messages"></div>
+        </div>
+
+        <div class="input-container">
+            <div class="search-box">
+                <i class="fas fa-globe icon-btn" id="search-btn" onclick="toggleSearchMode()" title="Click to enable Google Search"></i>
+                
+                <i class="fas fa-paperclip icon-btn" onclick="document.getElementById('file-in').click()"></i>
+                <input type="file" id="file-in" style="display:none" onchange="handleFile()">
+                
+                <input type="text" id="user-in" placeholder="Ask SESKO anything..." onkeypress="checkEnter(event)">
+                
+                <button onclick="sendMessage()" style="background: none; border: none;">
+                    <i class="fas fa-paper-plane icon-btn" style="color: var(--accent-blue);"></i>
+                </button>
+            </div>
+            <p style="font-size: 11px; text-align: center; margin-top: 10px; opacity: 0.6;">SESKO can make mistakes. Verify important info.</p>
+        </div>
+    </main>
+
+    <script>
+        const msgContainer = document.getElementById('messages');
+        const welcome = document.getElementById('welcome');
+        const chatWin = document.getElementById('chat-window');
+        
+        // 1. Search Mode Variable
+        let isSearchMode = false;
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+        function checkEnter(e) { if (e.key === 'Enter') sendMessage(); }
+
+        // 2. Toggle Search Mode Function
+        function toggleSearchMode() {
+            isSearchMode = !isSearchMode;
+            const btn = document.getElementById('search-btn');
+            const input = document.getElementById('user-in');
+            
+            if (isSearchMode) {
+                btn.style.color = "#4285f4"; // Blue when active
+                input.placeholder = "Search Google for...";
+            } else {
+                btn.style.color = "var(--text-secondary)"; // Grey when inactive
+                input.placeholder = "Ask SESKO anything...";
+            }
+        }
+
+        function appendMessage(sender, text) {
+            welcome.style.display = 'none';
+            const msgDiv = document.createElement('div');
+            msgDiv.className = sender === 'user' ? 'user-msg' : 'bot-msg';
+            
+            if (sender === 'user') {
+                msgDiv.innerHTML = `<span>${text}</span>`;
+            } else {
+                msgDiv.innerHTML = `
+                    <div class="bot-icon"><i class="fas fa-robot"></i></div>
+                    <div class="bot-text">${text}</div>
+                `;
+            }
+            msgContainer.appendChild(msgDiv);
+            chatWin.scrollTo({ top: chatWin.scrollHeight, behavior: 'smooth' });
+        }
+
+        // 3. Updated sendMessage Function
+        async function sendMessage() {
+            const input = document.getElementById('user-in');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            appendMessage('user', text);
+            
+            // Show Animated Thinking
+            const thinkingId = "think-" + Date.now();
+            const thinkingDiv = document.createElement('div');
+            thinkingDiv.className = 'bot-msg';
+            thinkingDiv.id = thinkingId;
+            thinkingDiv.innerHTML = `
+                <div class="bot-icon"><i class="fas fa-robot"></i></div>
+                <div class="dots">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                </div>`;
+            msgContainer.appendChild(thinkingDiv);
+            chatWin.scrollTop = chatWin.scrollHeight;
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        message: text,
+                        mode: isSearchMode ? 'search' : 'chat' // Sending mode to Python
+                    })
+                });
+                const data = await response.json();
+                document.getElementById(thinkingId).remove();
+                appendMessage('bot', data.reply);
+            } catch (err) {
+                document.getElementById(thinkingId).innerHTML = `<div class="bot-icon">!</div><div class="bot-text">Error connecting to SESKO server.</div>`;
+            }
+        }
+
+        async function handleFile() {
+            const fileInput = document.getElementById('file-in');
+            const file = fileInput.files[0];
+            if(!file) return;
+
+            appendMessage('user', `<i class="fas fa-file-alt"></i> Uploading: <b>${file.name}</b>`);
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/upload', { method: 'POST', body: formData });
+                const data = await response.json();
+                appendMessage('bot', data.reply);
+            } catch (err) {
+                appendMessage('bot', "File upload failed. Please try again.");
+            }
+        }
+
+        function clearHistory() { 
+            msgContainer.innerHTML = ""; 
+            welcome.style.display = "flex"; // Changed to flex to maintain centering
+        }
+    </script>
+</body>
+</html>
