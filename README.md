@@ -30,7 +30,7 @@ Cloud and Edge deployment planned via incubation support.
 ![Chat Interface](screenshots/first%20interaction.png)
 
 ### Mathematical & General Queries
-![Math Calculations](screenshots/Mathematical_Calculations.png)
+![Math Calculations](Screenshots/Mathematical_Calculations.png)
 
 ### PDF Summarization
 ![PDF Summary](screenshots/pdf%20summarization.png)
