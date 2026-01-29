@@ -24,21 +24,6 @@ SESKO AI is designed to process user data **locally or on sovereign edge nodes**
 This is a **working MVP prototype** currently running locally.  
 Cloud and Edge deployment planned via incubation support.
 
-## 📸 Screenshots
-
-### Chat Interface
-![Chat Interface](screenshots/first%20interaction.png)
-
-### Mathematical & General Queries
-![Math Calculations](Screenshots/Mathematical_Calculations.png)
-
-### PDF Summarization
-![PDF Summary](screenshots/pdf%20summarization.png)
-
-### Web Search & Website Info
-![Website Suggestions](screenshots/website%20suggestions.png)
-
-
 ## 👤 Founder
 Mohd Kaif Gawandi  
 Solo technical founder
